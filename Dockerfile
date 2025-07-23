@@ -1,12 +1,10 @@
 FROM  node:12-alpine as yarn-install
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache --virtual build-dependencies bash git openssh python make g++ && \
-    yarn --no-cache || \
-    apk del build-dependencies && \
-    yarn cache clean
+RUN apk update && apk upgrade && apk add --no-cache --virtual build-dependencies bash git openssh python3 make g++ \
+  && yarn --no-cache \
+  && apk del build-dependencies \
+  && yarn cache clean
 
 # Stage 1
 FROM  node:12-alpine as react-build
